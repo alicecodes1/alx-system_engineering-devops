@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Create a script to install and configure HAProxy on lb-01 server
+# Create a script to install and configure HAProxy on lb-01 server.
 # Configure HAProxy to send traffic to web-01 and web-02 servers
 # Distribute requests using a roundrobin algorithm
 # Make sure that HAProxy can be managed via an init script
