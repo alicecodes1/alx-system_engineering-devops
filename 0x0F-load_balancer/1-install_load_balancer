@@ -43,15 +43,15 @@ defaults
 
 frontend ifeoluwaseriki.tech
     timeout client 30000
-    bind 0:8080
+    bind 0:80
     default_backend ifeoluwaseriki.tech_backend
 
 backend ifeoluwaseriki.tech_backend
     timeout connect 3000
     timeout server 30000
     balance roundrobin
-    server 302455-web-01 34.232.76.171:8080 check
-    server 302455-web-02 54.166.164.2:8080 check
+    server 302455-web-01 34.232.76.171:80 check
+    server 302455-web-02 54.166.164.2:80 check
 EOT
 
 # Enable HAProxy to be managed via an init script
