@@ -4,24 +4,9 @@
 domain_information() {
     local domain="$1"
     local subdomain="$2"
-
-    # Check if 'dig' is available
-    if ! command -v dig &>/dev/null; then
-        echo "Error: 'dig' command not found. Please install 'dnsutils' or 'bind-utils' package."
-        exit 1
-    fi
-
-    # Use 'dig' to retrieve information
-    local result
-    result=$(dig "$subdomain"."$domain" +short)
-    
-    # Check if 'dig' succeeded
-    if [ -n "$result" ]; then
-        local record_type=$(dig "$subdomain"."$domain" +short -t)
-        echo "The subdomain $subdomain is a $record_type record and points to $result"
-    else
-        echo "No information found for the subdomain $subdomain"
-    fi
+    local line
+    line=$(dig "$subdomain"."$domain" | awk '/ANSWER SECTION:/ {getline; print; getline; print}')
+    echo "$subdomain $line" | awk '{printf "The subdomain %s is a %s record and points to %s\n", $1, $2, $3}'
 }
 
 if [ "$#" -eq 1 ]; then
@@ -31,8 +16,4 @@ if [ "$#" -eq 1 ]; then
     domain_information "$1" "web-02"
 elif [ "$#" -eq 2 ]; then
     domain_information "$1" "$2"
-else
-    echo "Usage: $0 <domain> [subdomain]"
-    exit 1
 fi
-
